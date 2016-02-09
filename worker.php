@@ -47,6 +47,8 @@ if (file_exists($buildFile)) {
     } catch (Exception $e) {
         $pushkin->setStatusError($e);
     }
+} else {
+    $log->addInfo("No pushkin.php found, skipping");
 }
 $log->addInfo("Cleanup");
 chdir($app['workspace']);
