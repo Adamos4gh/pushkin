@@ -60,13 +60,13 @@ $app->post('/github', function (Request $request) use ($app) {
     return 'OK';
 });
 
-$app['github.client'] = $app->share(function() use ($app) {
+$app['github.client'] = $app->share(function () use ($app) {
     $github = new Github\Client();
     $github->authenticate($app['github']['user'], $app['github']['password']);
     return $github;
 });
 
-$app['pushkin'] = $app->share(function() use ($app) {
+$app['pushkin'] = $app->share(function () use ($app) {
     return new \Pushkin\Pushkin($app['github.client']);
 });
 

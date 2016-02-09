@@ -1,4 +1,4 @@
 <?php
-return function(\Pushkin\PushkinInterface $pushkin) {
+return function (\Pushkin\PushkinInterface $pushkin) {
     $pushkin->run('composer install');
 };
