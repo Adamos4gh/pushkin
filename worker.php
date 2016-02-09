@@ -26,7 +26,7 @@ $log->addInfo("Done cloning");
 
 /** @var \Pushkin\Pushkin $pushkin */
 $pushkin = $app['pushkin'];
-$pushkin->setUser($payload['repository']['owner']['login']);
+$pushkin->setUser($payload['repository']['owner']['name']);
 $pushkin->setRepo($payload['repository']['name']);
 $pushkin->setCommit($commit);
 
