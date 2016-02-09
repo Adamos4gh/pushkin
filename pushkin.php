@@ -1,5 +1,4 @@
 <?php
 return function (\Pushkin\PushkinInterface $pushkin) {
-    $pushkin->run('composer install');
-    $pushkin->commentCommit('What a Pushkin, what a son of a bitch!');
+    $pushkin->run('exit 1');
 };
