@@ -125,7 +125,7 @@ class Pushkin implements PushkinInterface
     {
         $this->github->repo()->statuses()
             ->create($this->user, $this->repo, $this->commit, [
-                    'status' => $status,
+                    'state' => $status,
                     'context' => 'pushkin',
                     'description' => $description,
                 ]
