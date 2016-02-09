@@ -18,7 +18,7 @@ $app = new Application(
             'php' => 'php',
             'events' => ['push', 'ping'],
             'github' => [
-                'username' => 'github_username',
+                'user' => 'github_username',
                 'password' => 'github_password'
             ]
         ],

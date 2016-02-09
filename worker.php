@@ -17,40 +17,47 @@ $commit = $payload['head_commit']['id'];
 
 $log->addInfo("Git info", ['origin' => $origin, 'commit' => $commit,]);
 
-mkdir($dir, 0777, true);
-chdir($dir);
-`git clone $origin . --depth=1`;
-`git checkout $commit`;
+try {
+    mkdir($dir, 0777, true);
+    chdir($dir);
+    `git clone $origin . --depth=1`;
+    `git checkout $commit`;
 
-$log->addInfo("Done cloning");
+    $log->addInfo("Done cloning");
 
-/** @var \Pushkin\Pushkin $pushkin */
-$pushkin = $app['pushkin'];
-$pushkin->setUser($payload['repository']['owner']['name']);
-$pushkin->setRepo($payload['repository']['name']);
-$pushkin->setCommit($commit);
+    /** @var \Pushkin\Pushkin $pushkin */
+    $pushkin = $app['pushkin'];
+    $pushkin->setUser($payload['repository']['owner']['name']);
+    $pushkin->setRepo($payload['repository']['name']);
+    $pushkin->setCommit($commit);
 
-$buildFile = $dir.'/'.'pushkin.php';
-if (file_exists($buildFile)) {
-    try {
-        $pushkin->setStatusPending('Starting build');
-        /** @var callable $build */
-        $build = require $buildFile;
-        if (!is_callable($build)) {
-            throw new InvalidArgumentException('No callable returned from the build file');
+    $buildFile = $dir.'/'.'pushkin.php';
+    if (file_exists($buildFile)) {
+        try {
+            $pushkin->setStatusPending('Starting build');
+            /** @var callable $build */
+            $build = require $buildFile;
+            if (!is_callable($build)) {
+                throw new InvalidArgumentException('No callable returned from the build file');
+            }
+            $build($app['pushkin']);
+            $pushkin->setStatusSuccess('Woah!');
+        } catch (\Pushkin\ExitCodeException $e) {
+            $pushkin->commentCommit("*Command failed*: `{$e->getCommand()}`\n```\n{$e->getOutput()}\n```", $commit);
+            $pushkin->setStatusFailed($e);
+        } catch (Exception $e) {
+            $pushkin->setStatusError($e);
         }
-        $build($app['pushkin']);
-        $pushkin->setStatusSuccess('Woah!');
-    } catch (\Pushkin\ExitCodeException $e) {
-        $pushkin->commentCommit("*Command failed*: `{$e->getCommand()}`\n```\n{$e->getOutput()}\n```", $commit);
-        $pushkin->setStatusFailed($e);
-    } catch (Exception $e) {
-        $pushkin->setStatusError($e);
+    } else {
+        $log->addInfo("No pushkin.php found, skipping");
     }
-} else {
-    $log->addInfo("No pushkin.php found, skipping");
+
+} catch (Exception $e) {
+    $log->addError($e);
+
+} finally {
+    $log->addInfo("Cleanup");
+    chdir($app['workspace']);
+    `rm -rf $dir`;
 }
-$log->addInfo("Cleanup");
-chdir($app['workspace']);
-`rm -rf $dir`;
 $log->addInfo("Worker done");
