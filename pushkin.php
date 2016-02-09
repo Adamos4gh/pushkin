@@ -1,4 +1,4 @@
 <?php
 return function (\Pushkin\PushkinInterface $pushkin) {
-    $pushkin->run('exit 1');
+    $pushkin->run('zzzz');
 };
