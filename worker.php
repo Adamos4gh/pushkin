@@ -1,6 +1,6 @@
 <?php
 /** @var \Silex\Application $app */
-$app = require_once __DIR__ . '/pushkin.php';
+$app = require_once __DIR__ . '/app.php';
 /** @var \Monolog\Logger $log */
 $log = $app['monolog'];
 Monolog\ErrorHandler::register($app['monolog']);
@@ -40,6 +40,7 @@ if (file_exists($buildFile)) {
             throw new InvalidArgumentException('No callable returned from the build file');
         }
         $build($app['pushkin']);
+        $pushkin->setStatusSuccess('Woah!');
     } catch (\Pushkin\ExitCodeException $e) {
         $pushkin->commentCommit("*Command failed*: `{$e->getCommand()}`\n```\n{$e->getOutput()}\n```", $commit);
         $pushkin->setStatusFailed($e);

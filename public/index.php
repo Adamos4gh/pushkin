@@ -1,6 +1,6 @@
 <?php
 /** @var \Silex\Application $app */
-$app = require_once dirname(__DIR__).'/pushkin.php';
+$app = require_once dirname(__DIR__).'/app.php';
 $app->handle(\Symfony\Component\HttpFoundation\Request::createFromGlobals());
 
 if (PHP_SAPI !== 'cli') {
