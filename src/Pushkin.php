@@ -108,12 +108,11 @@ class Pushkin implements PushkinInterface
     /**
      * Add a comment to commit
      * @param string $commit
-     * @param string $comment
      */
-    public function commentCommit($commit, $comment)
+    public function commentCommit($commit)
     {
         $this->github->repo()->comments()
-            ->create($this->user, $this->repo, $commit, ['body' => $comment]);
+            ->create($this->user, $this->repo, $this->commit, ['body' => $comment]);
     }
 
     /**

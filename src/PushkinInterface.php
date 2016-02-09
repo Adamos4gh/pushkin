@@ -36,9 +36,8 @@ interface PushkinInterface
     /**
      * Add a comment to commit
      * @param string $commit
-     * @param string $comment
      */
-    public function commentCommit($commit, $comment);
+    public function commentCommit($commit);
 
     /**
      * @link  https://developer.github.com/v3/repos/statuses/
