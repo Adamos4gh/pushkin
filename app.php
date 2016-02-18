@@ -7,24 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$app = new Application(
-    array_replace_recursive(
-        [
-            'log' => [
-                'logfile' => '/var/log/pushkin.log',
-                'level' => 'error'
-            ],
-            'workspace' => '/tmp/pushkin',
-            'php' => 'php',
-            'events' => ['push', 'ping'],
-            'github' => [
-                'user' => 'github_username',
-                'password' => 'github_password'
-            ]
-        ],
-        Yaml::parse(file_get_contents(__DIR__ . '/config.yml'))
-    )
-);
+$app = new Application(Yaml::parse(file_get_contents(__DIR__ . '/config.yml')));
 
 $app->register(new MonologServiceProvider(), [
     'monolog.logfile' => $app['log']['logfile'],
