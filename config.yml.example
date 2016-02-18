@@ -1,0 +1,21 @@
+# Logging path and level. Possible levels: debug, info, notice, warning, error, critical, alert, emergency
+log:
+ logfile: /var/log/pushkin.log
+ level: error
+
+# folder to upload and test project
+workspace: /tmp/pushkin
+
+# PHP commandline
+php: php
+
+# GitHub events to catch
+events:
+ - push
+ - ping
+
+# GitHub account settings
+github:
+ user: github_username
+ password: github_password
+ secret: github_secret
