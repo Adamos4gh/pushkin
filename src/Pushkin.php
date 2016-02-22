@@ -99,7 +99,7 @@ class Pushkin implements PushkinInterface
         if ($code !== 0) {
             $e = new ExitCodeException("Command failed: $cmd", $code);
             $e->setCommand($cmd);
-            $e->setOutput($output);
+            $e->setOutput(implode("\n", $output));
             throw $e;
         }
         return $output;
