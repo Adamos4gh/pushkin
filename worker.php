@@ -58,6 +58,6 @@ try {
 } finally {
     $log->addInfo("Cleanup");
     chdir($app['workspace']);
-    `rm -rf $dir`;
+    //`rm -rf $dir`;
 }
 $log->addInfo("Worker done");
