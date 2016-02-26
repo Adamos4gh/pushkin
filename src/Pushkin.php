@@ -91,7 +91,7 @@ class Pushkin implements PushkinInterface
 
     /**
      * @param string $cmd Command to run
-     * @return string Command output
+     * @return array Command output
      */
     public function run($cmd)
     {

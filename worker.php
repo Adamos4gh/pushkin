@@ -14,20 +14,20 @@ $log->addInfo("Worker started", ['argv' => $argv, 'dir' => $dir,]);
 
 $origin = sprintf('https://%s:%s@github.com/%s', $app['github']['user'], $app['github']['password'], $payload['repository']['full_name']);
 $commit = $payload['head_commit']['id'];
-$ref_parts = explode('/', $payload['ref']);
-$branch = $ref_parts[count($ref_parts) - 1];
+$refParts = explode('/', $payload['ref']);
+$branch = array_pop($refParts);
 
-$origin_escaped = escapeshellarg($origin);
-$commit_escaped = escapeshellarg($commit);
-$branch_escaped = escapeshellarg($branch);
+$originEscaped = escapeshellarg($origin);
+$commitEscaped = escapeshellarg($commit);
+$branchEscaped = escapeshellarg($branch);
 
 $log->addInfo("Git info", ['origin' => $origin, 'commit' => $commit, 'branch' => $branch]);
 
 try {
     mkdir($dir, 0777, true);
     chdir($dir);
-    `git clone -b $branch_escaped $origin_escaped . --depth=1`;
-    `git checkout $commit_escaped`;
+    `git clone -b $branchEscaped $originEscaped . --depth=1`;
+    `git checkout $commitEscaped`;
 
     $log->addInfo("Done cloning");
 
@@ -64,7 +64,7 @@ try {
 } finally {
     $log->addInfo("Cleanup");
     chdir($app['workspace']);
-    $dir_escaped = escapeshellarg($dir);
-    `rm -rf $dir_escaped`;
+    $dirEscaped = escapeshellarg($dir);
+    `rm -rf $dirEscaped`;
 }
 $log->addInfo("Worker done");
